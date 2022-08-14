@@ -59,7 +59,9 @@ const deleteHistory = (req, res, next) => {
     const { userID } = req;
     try {
       const user = await User.findOne({ _id: userID });
-      user.history.pull(user.history);
+      user.history.forEach((hist) => {
+        user.history.pull(hist);
+      });
       user.save();
 
       const history = await Video.find().where("_id").in(user.history);
